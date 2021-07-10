@@ -4,7 +4,8 @@ This is my collection of overwatch workshops (the source code) that I either lik
 
 # Practice Range Plus Plus
 
-File: [src/main/ow/practice_range_pp.txt]
+File: [practice_range_pp.txt](src/main/ow/practice_range_pp.txt) \
+Code: `9YTTH` (Version 3.3 by Scales), `AJERA` (Version 2.2 by PMSJellies)
 
 An improved version of the practice range. Originally by PMSJellies (known as Practice Range 2.2), with additions by
 Scales (known as Practice Range 3.3).
