@@ -2,7 +2,7 @@ settings
 {
 	main
 	{
-		Description: "Practice Range 2.2 by PMAJellies - Modified to 3.3 by Scales # 11791 | Follow @PMAJellies for updates"
+		Description: "Practice Range 2.2 by PMAJellies - Modified to 3.3 by Scales # 11791 - to 3.4 by github.com/Quota | Follow @PMAJellies for updates"
 	}
 
 	lobby
@@ -24,11 +24,6 @@ settings
 
 	heroes
 	{
-		Team 1
-		{
-			Ability Cooldown Time: 50%
-		}
-
 		Team 2
 		{
 			Genji
@@ -80,6 +75,8 @@ settings
 
 		General
 		{
+			Ability Cooldown Time: 0%
+			No Ammunition Requirement: On
 			Spawn With Ultimate Ready: On
 
 			Pharah
@@ -230,7 +227,7 @@ rule("Destroy All Bots")
 	}
 }
 
-disabled rule("Debug")
+rule("Debug")
 {
 	event
 	{
@@ -1877,18 +1874,28 @@ rule("Reinhardt Abilities")
 		Set Ultimate Charge(Event Player, 100);
 		Wait(Random Real(1.500, 3), Ignore Condition);
 		Stop Holding Button(Event Player, Button(Secondary Fire));
-		Event Player.R = Random Integer(1, 5);
+		"Pick one of four actions: 1=primary, 2=fire strike, 3=charge, 4=ultimate"
+		Event Player.R = Random Integer(1, 4);
 		Skip If(Event Player.R != 1, 1);
 		Start Holding Button(Event Player, Button(Primary Fire));
 		Skip If(Event Player.R != 2, 1);
 		Press Button(Event Player, Button(Ability 2));
-		Skip If(Event Player.R != 3, 1);
-		Press Button(Event Player, Button(Ultimate));
+		Skip If(Event Player.R != 3, 6);
+		"Charge, wait 4 sec, then move Rein back to initial place"
+		Press Button(Event Player, Button(Ability 1));
+		Wait(4, Ignore Condition);
+		Start Forcing Player Position(Event Player, Vector(64.112, 8.413, -30.583), True);
+		Wait(0.250, Ignore Condition);
+		Stop Forcing Player Position(Event Player);
+		Set Facing(Event Player, Vector(-0.600, 0, 0.800), To World);
 		Skip If(Event Player.R != 4, 1);
 		Press Button(Event Player, Button(Ultimate));
 		Skip If(Event Player.R != 5, 1);
 		Press Button(Event Player, Button(Ultimate));
 		Wait(2, Ignore Condition);
+		"Wait until not longer hacked/knocked down/asleep/frozen/rooted/stunned"
+		Wait Until(!(Has Status(Event Player, Hacked) || Has Status(Event Player, Knocked Down) || Has Status(Event Player, Asleep)
+			|| Has Status(Event Player, Frozen) || Has Status(Event Player, Rooted) || Has Status(Event Player, Stunned)), 9999);
 		Stop Holding Button(Event Player, Button(Primary Fire));
 		Start Holding Button(Event Player, Button(Secondary Fire));
 		Loop If(Is Alive(Event Player));
