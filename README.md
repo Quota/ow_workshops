@@ -9,3 +9,9 @@ Code: `9YTTH` (Version 3.3 by Scales), `AJERA` (Version 2.2 by PMSJellies)
 
 An improved version of the practice range. Originally by PMSJellies (known as Practice Range 2.2), with additions by
 Scales (known as Practice Range 3.3).
+
+Additions in my version:
+* Reinhard
+  * Add ability to charge
+  * All actions are now equally likley to happen (before: p(ult)=3/5, p(others)=1/5)
+  * TODO: Add function to switch between random actions and specific actions
