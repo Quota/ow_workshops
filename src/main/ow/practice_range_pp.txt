@@ -24,6 +24,11 @@ settings
 
 	heroes
 	{
+		Team 1
+		{
+			Ability Cooldown Time: 50%
+		}
+
 		Team 2
 		{
 			Genji
@@ -41,6 +46,7 @@ settings
 			{
 				Barrier Field Cooldown Time: 0%
 				Barrier Field Recharge Rate: 500%
+				Charge Cooldown Time: 0%
 				Damage Dealt: 10%
 				Fire Strike Cooldown Time: 0%
 				Spawn With Ultimate Ready: On
@@ -75,8 +81,6 @@ settings
 
 		General
 		{
-			Ability Cooldown Time: 0%
-			No Ammunition Requirement: On
 			Spawn With Ultimate Ready: On
 
 			Pharah
@@ -227,7 +231,7 @@ rule("Destroy All Bots")
 	}
 }
 
-rule("Debug")
+disabled rule("Debug")
 {
 	event
 	{
@@ -767,15 +771,24 @@ rule("Reinhardt Button")
 
 	actions
 	{
-		Skip If(Global.Z[10] == 1, 8);
+		"Reinhardt mode is 0: create and set mode to 1"
+		Skip If(Global.Z[10] >= 1, 8);
 		Skip If(Number Of Players(Team 2) < 5, 2);
 		Wait(0.050, Ignore Condition);
 		Destroy Dummy Bot(Team 2, 0);
 		Create Dummy Bot(Hero(Reinhardt), Team 2, -1, Vector(64.112, 8.413, -30.584), Vector(-0.600, 0, 0.800));
 		Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
 		Play Effect(All Players(All Teams), Ring Explosion, Color(Green), Vector(64.112, 8.413, -30.584), 1);
+		"Reinhardt modes: 0 inactive, 1 random, 2 primary, 3 fire strike, 4 charge, 5 ultimate"
 		Global.Z[10] = 1;
 		Abort;
+		"Reinhardt mode is 0...4: increment by 1"
+		Skip If(Global.Z[10] >= 5, 4);
+		Global.Z[10] = Global.Z[10] + 1;
+		Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
+		Play Effect(All Players(All Teams), Ring Explosion, Color(Yellow), Vector(64.112, 8.413, -30.584), 1);
+		Abort;
+		"Reinhardt mode is 5: back to 0 = remove him"
 		Destroy Dummy Bot(Team 2, Slot Of(Players On Hero(Hero(Reinhardt), Team 2)));
 		Global.Z[10] = 0;
 		Play Effect(All Players(All Teams), Debuff Impact Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
@@ -1874,8 +1887,13 @@ rule("Reinhardt Abilities")
 		Set Ultimate Charge(Event Player, 100);
 		Wait(Random Real(1.500, 3), Ignore Condition);
 		Stop Holding Button(Event Player, Button(Secondary Fire));
+		"If Reinhard mode is 1 then choose ability randomly"
+		Skip If(Global.Z[10] != 1, 2);
 		"Pick one of four actions: 1=primary, 2=fire strike, 3=charge, 4=ultimate"
 		Event Player.R = Random Integer(1, 4);
+		Skip(1);
+		"If Reinhard mode > 1 then use number-1 for ability to execute"
+		Event Player.R = Global.Z[10] - 1;
 		Skip If(Event Player.R != 1, 1);
 		Start Holding Button(Event Player, Button(Primary Fire));
 		Skip If(Event Player.R != 2, 1);
