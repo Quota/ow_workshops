@@ -11,7 +11,7 @@ An improved version of the practice range. Originally by PMSJellies (known as Pr
 Scales (known as Practice Range 3.3).
 
 Additions in my version `6BH1A`:
-* Reinhard
+* Reinhardt
   * Add ability to charge
   * Add function to switch between random actions and specific actions
   * In random mode all actions are now equally likley to happen (before: P(ultimate)=3/5, P(others)=1/5)
