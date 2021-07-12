@@ -132,18 +132,36 @@ rule("Global Variables")
 
 	actions
 	{
+		"Widowmaker"
 		Global.Z[0] = 0;
+		"Symmetra"
 		Global.Z[1] = 0;
+		"Pharah (0 off, 1 as enemy, 2 as friendly)"
 		Global.Z[2] = 0;
+		"Reaper"
 		Global.Z[3] = 0;
+		"Roadhog"
 		Global.Z[4] = 0;
+		"Tracer"
 		Global.Z[5] = 0;
+		"Lucio"
 		Global.Z[6] = 0;
+		"Mercy (requires Pharah)"
 		Global.Z[7] = 0;
+		"Genji"
 		Global.Z[8] = 0;
+		"Mei"
 		Global.Z[9] = 0;
+		"Reinhardt (0 off, 1 random, 2 primary, 3 fire strike, 4 charge, 5 ultimate)"
 		Global.Z[10] = 0;
+		"Sombra"
 		Global.Z[11] = 0;
+		"DV.a"
+		Global.Z[12] = 0;
+		"Zarya"
+		Global.Z[13] = 0;
+		"McCree"
+		Global.Z[14] = 0;
 		Global.T = 0;
 	}
 }
@@ -273,7 +291,7 @@ rule("McCree Button")
 		Create Dummy Bot(Hero(McCree), Team 2, -1, Vector(36.860, 0.349, -25.874), Vector(0, 0, 0.800));
 		Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(46.960, 8.526, -12.736), 100);
 		Play Effect(All Players(All Teams), Ring Explosion, Color(Red), Vector(46.960, 8.525, -12.736), 1);
-		Global.Z[13] = 1;
+		Global.Z[14] = 1;
 		Abort;
 		Destroy Dummy Bot(Team 2, Slot Of(Players On Hero(Hero(McCree), Team 2)));
 		Global.Z[14] = 0;
@@ -1887,12 +1905,12 @@ rule("Reinhardt Abilities")
 		Set Ultimate Charge(Event Player, 100);
 		Wait(Random Real(1.500, 3), Ignore Condition);
 		Stop Holding Button(Event Player, Button(Secondary Fire));
-		"If Reinhard mode is 1 then choose ability randomly"
+		"If Reinhardt mode is 1 then choose ability randomly"
 		Skip If(Global.Z[10] != 1, 2);
 		"Pick one of four actions: 1=primary, 2=fire strike, 3=charge, 4=ultimate"
 		Event Player.R = Random Integer(1, 4);
 		Skip(1);
-		"If Reinhard mode > 1 then use number-1 for ability to execute"
+		"If Reinhardt mode > 1 then use number-1 for ability to execute"
 		Event Player.R = Global.Z[10] - 1;
 		Skip If(Event Player.R != 1, 1);
 		Start Holding Button(Event Player, Button(Primary Fire));

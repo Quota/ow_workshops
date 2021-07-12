@@ -15,3 +15,5 @@ Additions in my version `6BH1A`:
   * Add ability to charge
   * Add function to switch between random actions and specific actions
   * In random mode all actions are now equally likley to happen (before: P(ultimate)=3/5, P(others)=1/5)
+* McCree
+  * Fix button allowing to remove him again
