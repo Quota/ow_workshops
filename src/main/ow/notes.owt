@@ -1,4 +1,4 @@
-rule("Debug: Display current location, direction and wall hit")
+rule("Debug: Display current position, direction and wall hit")
 {
 	event
 	{
