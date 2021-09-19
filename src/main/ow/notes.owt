@@ -36,3 +36,19 @@ rule("Init: Start match immediately")
 		Set Match Time(0);
 	}
 }
+
+rule("Init: Disable default respawn and nameplates of team 2")
+{
+	event
+	{
+		Ongoing - Each Player;
+		Team 2;
+		All;
+	}
+
+	actions
+	{
+		Disable Built-In Game Mode Respawning(Event Player);
+		Disable Nameplates(Event Player, All Players(All Teams));
+	}
+}
