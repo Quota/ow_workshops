@@ -160,7 +160,7 @@ rule("Global Variables")
 		Global.Z[12] = 0;
 		"Zarya"
 		Global.Z[13] = 0;
-		"McCree"
+		"Cassidy"
 		Global.Z[14] = 0;
 		Global.T = 0;
 	}
@@ -267,7 +267,7 @@ disabled rule("Debug")
 	}
 }
 
-rule("McCree Button")
+rule("Cassidy Button")
 {
 	event
 	{
@@ -288,12 +288,12 @@ rule("McCree Button")
 		Skip If(Number Of Players(Team 2) < 5, 2);
 		Wait(0.050, Ignore Condition);
 		Destroy Dummy Bot(Team 2, 0);
-		Create Dummy Bot(Hero(McCree), Team 2, -1, Vector(36.860, 0.349, -25.874), Vector(0, 0, 0.800));
+		Create Dummy Bot(Hero(Cassidy), Team 2, -1, Vector(36.860, 0.349, -25.874), Vector(0, 0, 0.800));
 		Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(46.960, 8.526, -12.736), 100);
 		Play Effect(All Players(All Teams), Ring Explosion, Color(Red), Vector(46.960, 8.525, -12.736), 1);
 		Global.Z[14] = 1;
 		Abort;
-		Destroy Dummy Bot(Team 2, Slot Of(Players On Hero(Hero(McCree), Team 2)));
+		Destroy Dummy Bot(Team 2, Slot Of(Players On Hero(Hero(Cassidy), Team 2)));
 		Global.Z[14] = 0;
 		Play Effect(All Players(All Teams), Debuff Impact Sound, Color(White), Vector(46.960, 8.526, -12.736), 100);
 		Play Effect(All Players(All Teams), Ring Explosion, Color(Red), Vector(46.960, 8.526, -12.736), 1);
@@ -2123,13 +2123,13 @@ rule("Zarya Bot Dies")
 	}
 }
 
-rule("McCree HighNoon")
+rule("Cassidy HighNoon")
 {
 	event
 	{
 		Ongoing - Each Player;
 		Team 2;
-		McCree;
+		Cassidy;
 	}
 
 	actions
@@ -2150,18 +2150,18 @@ rule("McCree HighNoon")
 	}
 }
 
-rule("McCree Bot Dies")
+rule("Cassidy Bot Dies")
 {
 	event
 	{
 		Player Died;
 		Team 2;
-		McCree;
+		Cassidy;
 	}
 
 	actions
 	{
 		Destroy Dummy Bot(Team 2, Slot Of(Event Player));
-		Create Dummy Bot(Hero(McCree), Team 2, -1, Vector(36.860, 0.349, -25.874), Vector(0, 0, -0.800));
+		Create Dummy Bot(Hero(Cassidy), Team 2, -1, Vector(36.860, 0.349, -25.874), Vector(0, 0, -0.800));
 	}
 }
