@@ -2,7 +2,7 @@ settings
 {
 	main
 	{
-		Description: "Practice Range 2.2 by PMAJellies - Modified to 3.3 by Scales # 11791 - to 3.4 by github.com/Quota | Follow @PMAJellies for updates"
+		Description: "Practice Range 2.2 by PMAJellies - Modified to 3.3 by Scales # 11791 - to 3.5 by github.com/Quota | Follow @PMAJellies for updates"
 	}
 
 	lobby
