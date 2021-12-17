@@ -100,6 +100,7 @@ variables
 {
 	global:
 		26: mercySphere
+		27: reaperDirection
 }
 
 rule("Free Ult [Crouch + Interact]")
@@ -138,7 +139,7 @@ rule("Global Variables")
 		Global.Z[1] = 0;
 		"Pharah (0 off, 1 as enemy, 2 as friendly)"
 		Global.Z[2] = 0;
-		"Reaper"
+		"Reaper (0 off, 1 with wraith, 2 without wraith)"
 		Global.Z[3] = 0;
 		"Roadhog"
 		Global.Z[4] = 0;
@@ -490,19 +491,25 @@ rule("Reaper Button")
 
 	actions
 	{
-		Skip If(Global.Z[3] == 1, 8);
-		Skip If(Number Of Players(Team 2) < 5, 2);
-		Destroy Dummy Bot(Team 2, 0);
-		Wait(0.050, Ignore Condition);
-		Create Dummy Bot(Hero(Reaper), Team 2, -1, Vector(77.884, 3.813, 35.699), Vector(0.810, -0.180, 0.560));
-		Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(77.125, -2.827, 35.112), 100);
-		Play Effect(All Players(All Teams), Ring Explosion, Color(Green), Vector(77.125, -2.827, 35.112), 1);
-		Global.Z[3] = 1;
-		Abort;
-		Destroy Dummy Bot(Team 2, Slot Of(Players On Hero(Hero(Reaper), Team 2)));
-		Global.Z[3] = 0;
-		Play Effect(All Players(All Teams), Debuff Impact Sound, Color(White), Vector(77.125, -2.827, 35.112), 100);
-		Play Effect(All Players(All Teams), Ring Explosion, Color(Red), Vector(77.125, -2.827, 35.112), 1);
+		If(Global.Z[3] == 0);
+			If(Number Of Players(Team 2) >= 5);
+				Destroy Dummy Bot(Team 2, 0);
+				Wait(0.050, Ignore Condition);
+			End;
+			Create Dummy Bot(Hero(Reaper), Team 2, -1, Vector(77.884, 3.813, 35.699), Vector(0.810, -0.180, 0.560));
+			Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(77.125, -2.827, 35.112), 100);
+			Play Effect(All Players(All Teams), Ring Explosion, Color(Green), Vector(77.125, -2.827, 35.112), 1);
+			Global.Z[3] = 1;
+			Small Message(Event Player, Custom String("Reaper: Shadow step with wraith form"));
+		Else If(Global.Z[3] == 1);
+			Global.Z[3] = 2;
+			Small Message(Event Player, Custom String("Reaper: Shadow step without wraith form"));
+		Else;
+			Destroy Dummy Bot(Team 2, Slot Of(Players On Hero(Hero(Reaper), Team 2)));
+			Global.Z[3] = 0;
+			Play Effect(All Players(All Teams), Debuff Impact Sound, Color(White), Vector(77.125, -2.827, 35.112), 100);
+			Play Effect(All Players(All Teams), Ring Explosion, Color(Red), Vector(77.125, -2.827, 35.112), 1);
+		End;
 	}
 }
 
@@ -1134,24 +1141,26 @@ rule("Reaper Bot Movement")
 
 	actions
 	{
-		Start Facing(Event Player, Vector(0.810, -0.180, 0.560), 500, To World, Direction and Turn Rate);
+		"Determine direction to look depending on the column the Reaper is standing."
+		If(X Component Of(Position Of(Event Player)) < 80);
+			Global.reaperDirection = 1;
+		Else;
+			Global.reaperDirection = -1;
+		End;
+		Start Facing(Event Player, Vector(Global.reaperDirection * 0.810, -0.180, Global.reaperDirection * 0.560), 500, To World,
+			Direction and Turn Rate);
 		Wait(1, Ignore Condition);
 		Press Button(Event Player, Button(Ability 2));
 		Wait(0.200, Ignore Condition);
 		Press Button(Event Player, Button(Primary Fire));
 		Wait(2, Ignore Condition);
-		Press Button(Event Player, Button(Ability 1));
-		Wait(1, Ignore Condition);
-		Press Button(Event Player, Button(Ability 1));
-		Start Facing(Event Player, Vector(-0.810, -0.180, -0.560), 500, To World, Direction and Turn Rate);
-		Wait(1, Ignore Condition);
-		Press Button(Event Player, Button(Ability 2));
-		Wait(0.200, Ignore Condition);
-		Press Button(Event Player, Button(Primary Fire));
-		Wait(2, Ignore Condition);
-		Press Button(Event Player, Button(Ability 1));
-		Wait(1, Ignore Condition);
-		Press Button(Event Player, Button(Ability 1));
+		If(Global.Z[3] == 1);
+			Press Button(Event Player, Button(Ability 1));
+			Wait(1, Ignore Condition);
+			Press Button(Event Player, Button(Ability 1));
+		Else;
+			Wait(1, Ignore Condition);
+		End;
 		Loop If(Is Alive(Event Player));
 	}
 }
