@@ -1868,7 +1868,7 @@ rule("Mei Abilities")
 	actions
 	{
 		Press Button(Event Player, Button(Ability 1));
-		Wait(5, Ignore Condition);
+		Wait(5.500, Ignore Condition);
 		Destroy Dummy Bot(Team 2, Slot Of(Event Player));
 		Create Dummy Bot(Hero(Mei), Team 2, -1, Vector(75.632, -0.502, -17.050), Vector(-0.600, 0, 0.800));
 		Loop If(Is Alive(Event Player));
