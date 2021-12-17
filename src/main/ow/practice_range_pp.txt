@@ -797,27 +797,38 @@ rule("Reinhardt Button")
 	actions
 	{
 		"Reinhardt mode is 0: create and set mode to 1"
-		Skip If(Global.Z[10] >= 1, 8);
-		Skip If(Number Of Players(Team 2) < 5, 2);
-		Wait(0.050, Ignore Condition);
-		Destroy Dummy Bot(Team 2, 0);
-		Create Dummy Bot(Hero(Reinhardt), Team 2, -1, Vector(64.112, 8.413, -30.584), Vector(-0.600, 0, 0.800));
-		Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
-		Play Effect(All Players(All Teams), Ring Explosion, Color(Green), Vector(64.112, 8.413, -30.584), 1);
-		"Reinhardt modes: 0 inactive, 1 random, 2 primary, 3 fire strike, 4 charge, 5 ultimate"
-		Global.Z[10] = 1;
-		Abort;
-		"Reinhardt mode is 0...4: increment by 1"
-		Skip If(Global.Z[10] >= 5, 4);
-		Global.Z[10] = Global.Z[10] + 1;
-		Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
-		Play Effect(All Players(All Teams), Ring Explosion, Color(Yellow), Vector(64.112, 8.413, -30.584), 1);
-		Abort;
-		"Reinhardt mode is 5: back to 0 = remove him"
-		Destroy Dummy Bot(Team 2, Slot Of(Players On Hero(Hero(Reinhardt), Team 2)));
-		Global.Z[10] = 0;
-		Play Effect(All Players(All Teams), Debuff Impact Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
-		Play Effect(All Players(All Teams), Ring Explosion, Color(Red), Vector(64.112, 8.413, -30.584), 1);
+		If(Global.Z[10] == 0);
+			If(Number Of Players(Team 2) >= 5);
+				Wait(0.050, Ignore Condition);
+				Destroy Dummy Bot(Team 2, 0);
+			End;
+			Create Dummy Bot(Hero(Reinhardt), Team 2, -1, Vector(64.112, 8.413, -30.584), Vector(-0.600, 0, 0.800));
+			Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
+			Play Effect(All Players(All Teams), Ring Explosion, Color(Green), Vector(64.112, 8.413, -30.584), 1);
+			"Reinhardt modes: 0 inactive, 1 random, 2 primary, 3 fire strike, 4 charge, 5 ultimate"
+			Global.Z[10] = 1;
+			Small Message(Event Player, Custom String("Reinhardt: Random ability"));
+		"Reinhardt mode is 1...4: increment by 1"
+		Else If(Global.Z[10] < 5);
+			Global.Z[10] = Global.Z[10] + 1;
+			Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
+			Play Effect(All Players(All Teams), Ring Explosion, Color(Yellow), Vector(64.112, 8.413, -30.584), 1);
+			If(Global.Z[10] == 2);
+				Small Message(Event Player, Custom String("Reinhardt: Rocket hammer"));
+			Else If(Global.Z[10] == 3);
+				Small Message(Event Player, Custom String("Reinhardt: Fire strike"));
+			Else If(Global.Z[10] == 4);
+				Small Message(Event Player, Custom String("Reinhardt: Charge"));
+			Else If(Global.Z[10] == 5);
+				Small Message(Event Player, Custom String("Reinhardt: Earthshatter"));
+			End;
+		Else;
+			"Reinhardt mode is 5: back to 0 = remove him"
+			Destroy Dummy Bot(Team 2, Slot Of(Players On Hero(Hero(Reinhardt), Team 2)));
+			Global.Z[10] = 0;
+			Play Effect(All Players(All Teams), Debuff Impact Sound, Color(White), Vector(64.112, 8.413, -30.584), 100);
+			Play Effect(All Players(All Teams), Ring Explosion, Color(Red), Vector(64.112, 8.413, -30.584), 1);
+		End;
 	}
 }
 
