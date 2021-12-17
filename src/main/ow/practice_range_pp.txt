@@ -1191,7 +1191,7 @@ rule("Widow Bot Movement")
 		Press Button(Event Player, Button(Jump));
 		Start Facing(Event Player, Direction Towards(Eye Position(Event Player), Eye Position(Closest Player To(Position Of(Event Player),
 			Team 1))), 500, To World, Direction and Turn Rate);
-		Wait(4, Ignore Condition);
+		Wait(4.500, Ignore Condition);
 		Stop Facing(Event Player);
 		Loop If(Is Alive(Event Player));
 	}
